@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 /** A GUI for the project */
-public class MainPanel extends JPanel {
+public class MainPanel extends JPanel implements Observer {
 	// FILL IN CODE: A panel must implement Observer interface, so that it is an observer for the SocialNetwork,
 	// and gets notified when something changes in the social network
 	private SocialNetwork socialNetwork;
@@ -151,6 +151,11 @@ public class MainPanel extends JPanel {
 		buttonWithIcon.addActionListener(new ButtonListener());
 		buttonWithIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
 		return buttonWithIcon;
+	}
+
+	@Override
+	public void update() {
+
 	}
 
 	/**
