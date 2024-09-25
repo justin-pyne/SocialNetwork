@@ -26,6 +26,11 @@ abstract public class Profile {
         return image;
     }
 
+    public void addPost(Post post){
+        posts.add(post);
+        // notify observers of profile change, write to json
+    }
+
 
     public abstract List<String> getConnections();
     public abstract void addConnection(String name);
