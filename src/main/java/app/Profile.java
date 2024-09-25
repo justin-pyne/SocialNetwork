@@ -1,5 +1,4 @@
 package app;
-import java.util.ArrayList;
 import java.util.List;
 
 abstract public class Profile {
@@ -28,4 +27,8 @@ abstract public class Profile {
     }
 
 
+    public abstract List<String> getConnections();
+    public abstract void addConnection(String name);
+    public abstract void removeConnection(String name);
+    public abstract String getType();
 }

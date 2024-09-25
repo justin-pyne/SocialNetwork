@@ -63,6 +63,7 @@ public class MainPanel extends JPanel implements Observer {
 		createInfoPanel();
 		loggedInName = "Test"; // TODO: change
 		// FILL IN CODE:
+
 		// Set the loggedInName to some "default" user (first user in your social network?)
 		// Call a method to show the profile
 		showUserProfile();
