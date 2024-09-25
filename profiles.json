@@ -1,0 +1,163 @@
+{
+  "socialNetwork": [
+    {
+      "type": "user",
+      "name": "Helen",
+      "year": 1990,
+      "image": "helen.png",
+      "posts": [
+        {
+          "message": "We did it! We hiked half-dome",
+          "timestamp": "2024-09-23 11:56:02"
+        },
+        {
+          "message": "Hiking in Yosemite",
+          "timestamp": "2024-09-23 09:05:27"
+        }
+      ],
+      "friends": [
+        "Jenny",
+        "Cody",
+        "Dipika",
+        "Xiaofeng"
+      ]
+    },
+    {
+      "type": "user",
+      "name": "Jenny",
+      "year": 2000,
+      "image": "jenny.png",
+      "posts": [
+        {
+          "message": "Studying for the midterm",
+          "timestamp": "2024-09-22 21:47:02"
+        }
+      ],
+      "friends": [
+        "Cody",
+        "Helen",
+        "Xiaofeng"
+      ]
+    },
+    {
+      "type": "user",
+      "name": "Cody",
+      "year": 2001,
+      "image": "cody.png",
+      "posts": [
+        {
+          "message": "I am on a ferry to SF",
+          "timestamp": "2024-09-21 10:25:12"
+        }
+      ],
+      "friends": [
+        "Helen",
+        "Jenny",
+        "Xiaofeng",
+        "Bill"
+      ]
+    },
+    {
+      "type": "user",
+      "name": "Xiaofeng",
+      "year": 1984,
+      "image": "xiaofeng.png",
+      "posts": [
+        {
+          "message": "Going to play soccer with some friends",
+          "timestamp": "2024-09-22 10:04:15"
+        }
+      ],
+      "friends": [
+        "Cody",
+        "Dipika",
+        "Jenny",
+        "Helen"
+      ]
+    },
+    {
+      "type": "user",
+      "name": "Bill",
+      "year": 1960,
+      "image": "bill.png",
+      "posts": [
+        {
+          "message": "Going to the movie theater to see Dune 2",
+          "timestamp": "2024-09-20 20:27:50"
+        }
+      ],
+      "friends": [
+        "Cody",
+        "Dipika"
+      ]
+    },
+    {
+      "type": "user",
+      "name": "Dipika",
+      "year": 2000,
+      "image": "dipika.png",
+      "posts": [
+        {
+          "message": "I am participating in the marathon.",
+          "timestamp": "2024-09-22 07:01:00"
+        }
+      ],
+      "friends": [
+        "Xiaofeng",
+        "Helen",
+        "Bill"
+      ]
+    },
+    {
+      "type": "organization",
+      "name": "Berkeley Animal Care",
+      "year": 1999,
+      "image": "animals.png",
+      "phone": "(510) 981-6600",
+      "address": "1 Bolivar Dr, Berkeley CA",
+      "posts": [
+        {
+          "message": "Check our 60/6/60 Adoption Program for Senior Animals",
+          "timestamp": "2024-09-24 12:13:38"
+        },
+        {
+          "message": " All contributions support animal welfare",
+          "timestamp": "2024-09-23 12:39:01"
+        },
+        {
+          "message": "We have adorable pets to adopt, Donate today!",
+          "timestamp": "2024-09-23 11:45:49"
+        }
+      ],
+      "supporters": [
+        "Cody"
+      ]
+    },
+    {
+      "type": "organization",
+      "name": "San Francisco Opera",
+      "year": 1899,
+      "image": "sfopera.png",
+      "phone": "(415) 864-3330",
+      "address": "301 Van Ness Ave, San Francisco, CA",
+      "posts": [
+        {
+          "message": "Drinks & Drama: A Taste of Don Giovanni",
+          "timestamp": "2024-09-23 22:47:12"
+        },
+        {
+          "message": "Bring your whole family to Carmen for families",
+          "timestamp": "2024-09-23 20:16:04"
+        },
+        {
+          "message": "Tenor Hymel performs tonight",
+          "timestamp": "2024-09-23 19:55:28"
+        }
+      ],
+      "supporters": [
+        "Jenny",
+        "Xiaofeng"
+      ]
+    }
+  ]
+}
