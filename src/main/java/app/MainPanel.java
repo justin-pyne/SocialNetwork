@@ -61,7 +61,7 @@ public class MainPanel extends JPanel implements Observer {
 	public void createPanels() {
 		createTopPanel();
 		createInfoPanel();
-		loggedInName = "Test"; // TODO: change
+		loggedInName = "Helen";
 		// FILL IN CODE:
 
 		// Set the loggedInName to some "default" user (first user in your social network?)
@@ -171,6 +171,9 @@ public class MainPanel extends JPanel implements Observer {
 				char[] password = loginUserPassword.getPassword();
 				// FILL IN CODE: Call a method on the social network to authenticate the user
 				// FILL IN CODE: should show a user or an organization profile
+				socialNetwork.auth(loggedInName, password);
+				showUserProfile();
+
 
 			} else if (b.equals(addNewPostButton)) { // user entered a new post
 				String newMessage = newPost.getText();
