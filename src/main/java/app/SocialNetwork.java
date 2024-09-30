@@ -41,10 +41,6 @@ public class SocialNetwork implements Subject{
 		return Map.copyOf(profiles);
 	}
 
-	public void setProfiles(Map<String, Profile> profiles) {
-		this.profiles = profiles;
-	}
-
 	@Override
 	public void registerObserver(Observer o) {
 		observers.add(o);
