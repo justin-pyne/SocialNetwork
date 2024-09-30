@@ -1,5 +1,7 @@
 package app;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +11,27 @@ abstract public class Profile {
     private int year;
     private String image;
     private List<Post> posts;
-    private List<Profile> connections = new ArrayList<>();
 
     public Profile(JsonObject obj) {
         this.name = obj.get("name").getAsString();
         this.year = obj.get("year").getAsInt();
         this.image = obj.get("image").getAsString();
-        this.posts =
-        this.connections = ;
+        this.posts = parsePosts(obj);
     }
+
+    private List<Post> parsePosts(JsonObject obj){
+        List<Post> posts = new ArrayList<>();
+        JsonArray postsArray = obj.getAsJsonArray("posts");
+        for (JsonElement ele : postsArray){
+            JsonObject postObj = (JsonObject)ele;
+            String message = postObj.get("message").getAsString();
+            String timestamp = postObj.get("timestamp").getAsString();
+            Post post = new Post(message, timestamp);
+            posts.add(post);
+        }
+        return posts;
+    }
+
 
     public String getName() {
         return name;
@@ -30,10 +44,6 @@ abstract public class Profile {
     public String getImage() {
         return image;
     }
-
-    public List<Profile> getConnections(){
-        return List.copyOf(connections);
-    };
 
     public void addPost(Post post){
         posts.add(post);
