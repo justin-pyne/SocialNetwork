@@ -1,9 +1,6 @@
 package app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
  * File: SocialNetwork.java
@@ -14,6 +11,7 @@ public class SocialNetwork implements Subject{
 	// Must be the "Subject" in the Observer design pattern
 	// Will notify the observers (panels) when something changes
 	public Map<String, Profile> profiles = new HashMap<>();
+	public List<Observer> observers = new ArrayList<>();
 
 	public SocialNetwork() {
 	}
@@ -23,7 +21,19 @@ public class SocialNetwork implements Subject{
 		profiles = jp.parseProfiles(filePath);
 	}
 
-	public boolean auth(){
+	public boolean auth(String username, char[] password){
+		if (!profiles.containsKey(username) || !(profiles.get(username) instanceof UserProfile) || username.length() < 3){
+			return false;
+		}
+
+		String expectedPassword = username.substring(0, 3).toLowerCase() + profiles.get(username).getYear();
+		char[] expectedChars = expectedPassword.toCharArray();
+		if (Arrays.equals(password, expectedChars)){
+			System.out.println("Logged in.");
+			notifyObservers();
+			return true;
+		}
+		System.out.println("Login failed.");
 		return false;
 	}
 
@@ -31,16 +41,19 @@ public class SocialNetwork implements Subject{
 
 	@Override
 	public void registerObserver(Observer o) {
-
+		observers.add(o);
 	}
 
 	@Override
 	public void removeObserver(Observer o) {
-
+		observers.remove(o);
 	}
 
 	@Override
 	public void notifyObservers() {
+		for (Observer o : observers){
+			o.update();
+		}
 
 	}
 
