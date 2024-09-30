@@ -4,11 +4,14 @@ import javax.swing.*;
 
 /** The "main" class for the MyWorld app */
 public class MyWorldApp {
-    private SocialNetwork socialNetwork;
+    private SocialNetwork socialNetwork = new SocialNetwork();
     private JFrame frame1;
     private JFrame frame2;
 
     // FILL IN CODE: Add a method to set up the project (load data etc).
+    private void loadData(String fileName){
+        socialNetwork.loadJson(fileName);
+    }
 
     /**
      * Creates a GUI window (JFrame) which contains MyPanel
@@ -19,7 +22,7 @@ public class MyWorldApp {
         frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         JPanel panel = new MainPanel(socialNetwork);
         // FILL IN CODE: a panel should register as an Observer for the social network
-
+        socialNetwork.registerObserver((Observer)panel);
         frame.add(panel);
         frame.pack();
         frame.setVisible(true);
@@ -44,6 +47,7 @@ public class MyWorldApp {
     public static void main(String[] args) {
         MyWorldApp app = new MyWorldApp();
         // FILL IN CODE:  load data
+        app.loadData("./profiles.json");
         app.initializeFrames();
     }
 

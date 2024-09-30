@@ -227,13 +227,20 @@ public class MainPanel extends JPanel implements Observer {
 		// Panel to display the image
 		JPanel imageNamePanel = new JPanel();
 		imageNamePanel.setPreferredSize(new Dimension(700, 70));
-		String imageFile = "no_image.png"; // TODO: replace with the image of the logged-in user
+		String imageFile = socialNetwork.getProfiles().get(loggedInName).getImage(); // TODO: replace with the image of the logged-in user
 		addImage(imageFile, imageNamePanel);
 		addLabel(loggedInName, "Serif", 20, imageNamePanel);
 
 		// Panel to show friends
 		JPanel showFriendsPanel = new JPanel();
-		String friendsString = "Friend1, Friend2, Friend3"; // TODO: change to friends of the logged-in user
+		StringBuilder sb = new StringBuilder();
+		for(String user : ((UserProfile)(socialNetwork.getProfiles().get(loggedInName))).getFriends()){
+			if (sb.length() > 0){
+				sb.append(", ");
+			}
+			sb.append(user);
+		}
+		String friendsString = sb.toString(); // TODO: change to friends of the logged-in user
 		addLabel("Friends: " + friendsString, "Serif", 15, showFriendsPanel);
 
 		// Panel to add a new friend

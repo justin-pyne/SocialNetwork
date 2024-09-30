@@ -14,13 +14,13 @@ public class JsonProcessor {
 //        JsonProcessor jp = new JsonProcessor();
 //        Map<String, Profile> testMap = jp.parseProfiles("./profiles.json");
 //        System.out.println(testMap);
-        SocialNetwork socialNetwork = new SocialNetwork();
-        socialNetwork.loadJson("./profiles.json");
-        String username = "Helen";
-        char[] password = "hel1990".toCharArray();
-        char[] password2 = "hel2000".toCharArray();
-        socialNetwork.auth(username, password);
-        socialNetwork.auth(username, password2);
+//        SocialNetwork socialNetwork = new SocialNetwork();
+//        socialNetwork.loadJson("./profiles.json");
+//        String username = "Helen";
+//        char[] password = "hel1990".toCharArray();
+//        char[] password2 = "hel2000".toCharArray();
+//        socialNetwork.auth(username, password);
+//        socialNetwork.auth(username, password2);
     }
 
     public Map<String, Profile> parseProfiles(String fileName){
