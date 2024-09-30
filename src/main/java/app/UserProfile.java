@@ -22,6 +22,10 @@ public class UserProfile extends Profile{
         }
     }
 
+    public List<String> getFriends() {
+        return List.copyOf(friends);
+    }
+
     @Override
     public String getType() {
         return "user";

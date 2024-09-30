@@ -10,8 +10,8 @@ import java.util.*;
 public class SocialNetwork implements Subject{
 	// Must be the "Subject" in the Observer design pattern
 	// Will notify the observers (panels) when something changes
-	public Map<String, Profile> profiles = new HashMap<>();
-	public List<Observer> observers = new ArrayList<>();
+	private Map<String, Profile> profiles = new HashMap<>();
+	private List<Observer> observers = new ArrayList<>();
 
 	public SocialNetwork() {
 	}
@@ -37,7 +37,13 @@ public class SocialNetwork implements Subject{
 		return false;
 	}
 
+	public Map<String, Profile> getProfiles() {
+		return Map.copyOf(profiles);
+	}
 
+	public void setProfiles(Map<String, Profile> profiles) {
+		this.profiles = profiles;
+	}
 
 	@Override
 	public void registerObserver(Observer o) {
