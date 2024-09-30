@@ -24,20 +24,16 @@ public class OrganizationProfile extends Profile {
         }
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public String getAddress() {
         return address;
+    }
+
+    public List<String> getSupporters() {
+        return List.copyOf(supporters);
     }
 
     @Override
@@ -47,12 +43,12 @@ public class OrganizationProfile extends Profile {
 
     @Override
     public void addConnection(String name) {
-
+        supporters.add(name);
     }
 
     @Override
     public void removeConnection(String name) {
-
+        supporters.remove(name);
     }
 
     @Override

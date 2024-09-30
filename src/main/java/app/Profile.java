@@ -3,6 +3,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +47,12 @@ abstract public class Profile {
         return image;
     }
 
-    public void addPost(Post post){
+    public void addPost(String message){
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String currTime = now.format(format);
+        Post post = new Post(message, currTime);
         posts.add(post);
-        // notify observers of profile change, write to json
     }
 
     public abstract String getType();

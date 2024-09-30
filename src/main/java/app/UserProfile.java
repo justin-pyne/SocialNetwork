@@ -33,12 +33,12 @@ public class UserProfile extends Profile{
 
     @Override
     public void addConnection(String name) {
-
+        friends.add(name);
     }
 
     @Override
     public void removeConnection(String name) {
-
+        friends.remove(name);
     }
 
     @Override
