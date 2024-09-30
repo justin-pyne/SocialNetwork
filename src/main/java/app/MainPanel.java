@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /** A GUI for the project */
 public class MainPanel extends JPanel implements Observer {
@@ -66,7 +67,7 @@ public class MainPanel extends JPanel implements Observer {
 
 		// Set the loggedInName to some "default" user (first user in your social network?)
 		// Call a method to show the profile
-		showUserProfile();
+		update();
 		add(topPanel, BorderLayout.NORTH);
 		add(infoPanel, BorderLayout.CENTER);
 	}
@@ -156,7 +157,11 @@ public class MainPanel extends JPanel implements Observer {
 
 	@Override
 	public void update() {
-
+		if (socialNetwork.getProfiles().get((loggedInName)).getType().equals("user")){
+			showUserProfile();
+		} else {
+			showOrganizationProfile();
+		}
 	}
 
 	/**
@@ -165,6 +170,7 @@ public class MainPanel extends JPanel implements Observer {
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JButton b = (JButton) e.getSource();
+			Profile currProfile = socialNetwork.getProfiles().get(loggedInName);
 			if (b.equals(loginUserButton)) {
 				System.out.println("Login button pressed.");
 				loggedInName = loginUserName.getText();
@@ -172,11 +178,13 @@ public class MainPanel extends JPanel implements Observer {
 				// FILL IN CODE: Call a method on the social network to authenticate the user
 				// FILL IN CODE: should show a user or an organization profile
 				socialNetwork.auth(loggedInName, password);
-				showUserProfile();
+				update();
 
 
 			} else if (b.equals(addNewPostButton)) { // user entered a new post
 				String newMessage = newPost.getText();
+				currProfile.addPost(newMessage);
+				update();
 				// FILL IN CODE:
 				// Create/Add a post for the user/organization who is logged in
 				// You need to call the method on the social network
@@ -186,18 +194,24 @@ public class MainPanel extends JPanel implements Observer {
 			} else if (b.equals(addNewFriendButton)) { // user added a new
 				// friend
 				String friendName = friend.getText();
+				currProfile.addConnection(friendName);
+				update();
 				// FILL IN CODE: add a new friend for the logged-in user
 				// Call the method to show an updated profile
 				// Decide if you need to invoke any other methods
 
 			} else if (b.equals(removeFriendButton)) { // user removed a friend
 				String friendName = friend.getText();
+				currProfile.removeConnection(friendName);
+				update();
 				// FILL IN CODE: remove a friend of the logged-in user
 				// Call the method to show an updated profile
 				// Decide if you need to invoke any other methods
 
 			} else if (b.equals(addNewEventButton)) {
 				String eventText = newEvent.getText();
+				currProfile.addPost(eventText);
+				update();
 				// FILL IN CODE:
 				// Add a new even for the logged-in organization
 				// You can assume it is the same as adding a post.
@@ -219,6 +233,59 @@ public class MainPanel extends JPanel implements Observer {
 	 * Removes everything from infoPanel and then rebuilds it again.
 	 * Think of how you can write a similar method to display an organization profile.
 	 */
+	public void showOrganizationProfile() {
+		infoPanel.removeAll();
+		JPanel profilePanel = new JPanel();
+		profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
+		OrganizationProfile currUser = (OrganizationProfile)socialNetwork.getProfiles().get(loggedInName);
+
+		// Panel to display the image
+		JPanel imageNamePanel = new JPanel();
+		imageNamePanel.setPreferredSize(new Dimension(700, 70));
+		String imageFile = currUser.getImage(); // TODO: replace with the image of the logged-in user
+		addImage(imageFile, imageNamePanel);
+		addLabel(loggedInName, "Serif", 20, imageNamePanel);
+
+
+
+		JPanel showAddressPanel = new JPanel();
+		addLabel(currUser.getAddress(), "Serif", 15, showAddressPanel);
+
+		JPanel showPhonePanel = new JPanel();
+		addLabel(currUser.getPhone(), "Serif", 15, showPhonePanel);
+
+		JPanel showLikesPanel = new JPanel();
+		addLabel("Likes: " + currUser.getSupporters().size(), "Serif", 15, showLikesPanel);
+
+
+		// Panel for adding a new event
+		JPanel addNewEventPanel = new JPanel();
+		addNewEventPanel.setLayout(new BoxLayout(addNewEventPanel, BoxLayout.Y_AXIS));
+		newPost = new JTextField(15);
+		newPost.setMaximumSize(new Dimension(200, 30));
+		addNewEventPanel.add(newPost);
+
+
+		// Panel for the post button
+		JPanel newEventButtonPanel = new JPanel();
+		newEventButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT)); // Center the button
+		addNewEventButton = new JButton("Add Event");
+		addNewEventButton.addActionListener(new ButtonListener());
+		newEventButtonPanel.add(addNewPostButton);
+		addNewEventPanel.add(newEventButtonPanel);
+
+		// Add subpanels to profilePanel
+		profilePanel.add(imageNamePanel);
+		profilePanel.add(showAddressPanel);
+		profilePanel.add(showPhonePanel);
+		profilePanel.add(showLikesPanel);
+		profilePanel.add(addNewEventPanel);
+
+		infoPanel.add(profilePanel, BorderLayout.NORTH);
+		addNewsfeedPanel(infoPanel); // TODO: modify this method as needed
+	}
+
+
 	public void showUserProfile() {
 		infoPanel.removeAll();
 		JPanel profilePanel = new JPanel();
@@ -284,7 +351,6 @@ public class MainPanel extends JPanel implements Observer {
 		infoPanel.add(profilePanel, BorderLayout.NORTH);
 		addNewsfeedPanel(infoPanel); // TODO: modify this method as needed
 	}
-
 	/**
 	 * Add a newsfeed panel for the user that is logged in. The newsfeed
 	 * should include top most recent posts of this user and his/her friends (sorted
