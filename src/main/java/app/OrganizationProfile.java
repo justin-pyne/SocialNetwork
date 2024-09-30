@@ -43,7 +43,9 @@ public class OrganizationProfile extends Profile {
 
     @Override
     public void addConnection(String name) {
-        supporters.add(name);
+        if (!supporters.contains(name)){
+            supporters.add(name);
+        }
     }
 
     @Override

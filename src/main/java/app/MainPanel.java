@@ -195,6 +195,7 @@ public class MainPanel extends JPanel implements Observer {
 				// friend
 				String friendName = friend.getText();
 				currProfile.addConnection(friendName);
+				socialNetwork.getProfiles().get(friendName).addConnection(currProfile.getName());
 				update();
 				// FILL IN CODE: add a new friend for the logged-in user
 				// Call the method to show an updated profile
@@ -203,6 +204,7 @@ public class MainPanel extends JPanel implements Observer {
 			} else if (b.equals(removeFriendButton)) { // user removed a friend
 				String friendName = friend.getText();
 				currProfile.removeConnection(friendName);
+				socialNetwork.getProfiles().get(friendName).removeConnection(currProfile.getName());
 				update();
 				// FILL IN CODE: remove a friend of the logged-in user
 				// Call the method to show an updated profile

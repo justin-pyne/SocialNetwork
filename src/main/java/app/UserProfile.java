@@ -33,7 +33,9 @@ public class UserProfile extends Profile{
 
     @Override
     public void addConnection(String name) {
-        friends.add(name);
+        if (!friends.contains(name)){
+            friends.add(name);
+        }
     }
 
     @Override
