@@ -1,4 +1,7 @@
 package app;
+import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 abstract public class Profile {
@@ -6,12 +9,14 @@ abstract public class Profile {
     private int year;
     private String image;
     private List<Post> posts;
+    private List<Profile> connections = new ArrayList<>();
 
-    public Profile(String name, int year, String image, List<Post> posts) {
-        this.name = name;
-        this.year = year;
-        this.image = image;
-        this.posts = posts;
+    public Profile(JsonObject obj) {
+        this.name = obj.get("name").getAsString();
+        this.year = obj.get("year").getAsInt();
+        this.image = obj.get("image").getAsString();
+        this.posts =
+        this.connections = ;
     }
 
     public String getName() {
@@ -26,14 +31,16 @@ abstract public class Profile {
         return image;
     }
 
+    public List<Profile> getConnections(){
+        return List.copyOf(connections);
+    };
+
     public void addPost(Post post){
         posts.add(post);
         // notify observers of profile change, write to json
     }
 
-
-    public abstract List<String> getConnections();
+    public abstract String getType();
     public abstract void addConnection(String name);
     public abstract void removeConnection(String name);
-    public abstract String getType();
 }
