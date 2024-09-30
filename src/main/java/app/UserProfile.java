@@ -36,4 +36,11 @@ public class UserProfile extends Profile{
     public void removeConnection(String name) {
 
     }
+
+    @Override
+    public String toString() {
+        return "UserProfile{" + super.toString() +
+                '\'' + '\n' + "friends=" + friends +
+                '}';
+    }
 }

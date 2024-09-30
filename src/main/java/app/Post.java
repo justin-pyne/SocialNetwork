@@ -8,4 +8,13 @@ public class Post {
         this.message = message;
         this.timestamp = timestamp;
     }
+
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "message='" + message + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
+    }
 }

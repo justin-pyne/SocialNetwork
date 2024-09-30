@@ -53,4 +53,14 @@ abstract public class Profile {
     public abstract String getType();
     public abstract void addConnection(String name);
     public abstract void removeConnection(String name);
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "name='" + name + '\'' + '\n' +
+                ", year=" + year + '\n' +
+                ", image='" + image + '\'' + '\n' +
+                ", posts=" + posts +
+                '}';
+    }
 }

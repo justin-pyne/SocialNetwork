@@ -1,7 +1,9 @@
 package app;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
  * File: SocialNetwork.java
@@ -11,17 +13,18 @@ import java.util.List;
 public class SocialNetwork implements Subject{
 	// Must be the "Subject" in the Observer design pattern
 	// Will notify the observers (panels) when something changes
-	public List<Profile> profiles = new ArrayList<Profile>();
+	public Map<String, Profile> profiles = new HashMap<>();
 
 	public SocialNetwork() {
 	}
 
 	public void loadJson(String filePath){
-
+		JsonProcessor jp = new JsonProcessor();
+		profiles = jp.parseProfiles(filePath);
 	}
 
 	public boolean auth(){
-
+		return false;
 	}
 
 

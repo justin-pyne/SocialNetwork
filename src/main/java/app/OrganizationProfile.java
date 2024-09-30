@@ -18,9 +18,9 @@ public class OrganizationProfile extends Profile {
         this.phone = obj.get("phone").getAsString();
         this.address = obj.get("address").getAsString();
         JsonArray supporterArray = obj.getAsJsonArray("supporters");
-        for (JsonElement friendEle : supporterArray){
-            String name = friendEle.getAsString();
-            supporterArray.add(name);
+        for (JsonElement supporterEle : supporterArray){
+            String name = supporterEle.getAsString();
+            supporters.add(name);
         }
     }
 
@@ -53,5 +53,14 @@ public class OrganizationProfile extends Profile {
     @Override
     public void removeConnection(String name) {
 
+    }
+
+    @Override
+    public String toString() {
+        return "OrganizationProfile{" + super.toString() + '\'' + '\n' +
+                "supporters=" + supporters + '\n' +
+                ", phone='" + phone + '\'' + '\n' +
+                ", address='" + address + '\'' + '\n' +
+                '}';
     }
 }
