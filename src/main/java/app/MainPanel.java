@@ -1,5 +1,9 @@
 package app;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -9,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -227,6 +232,13 @@ public class MainPanel extends JPanel implements Observer {
 				// Decide if you need to invoke any other methods
 
 			} else if (b.equals(saveButton)) {
+				try (PrintWriter pw = new PrintWriter("savedProfiles.json")){
+					pw.println(serializeSocialNet());
+					pw.flush();
+				} catch (IOException k){
+					System.out.println(k);
+				}
+
 				// FILL IN CODE:
 				// Save social network in the file with the name
 				// stored in defaultPathToSaveSocialNetwork
@@ -373,17 +385,19 @@ public class MainPanel extends JPanel implements Observer {
 		newsFeedPanel.setLayout(new BoxLayout(newsFeedPanel, BoxLayout.Y_AXIS));
 		newsFeedPanel.setBackground(Color.WHITE);
 
-		// FILL IN CODE: change to get posts of the logged in user and their friends.
+		// FILL IN CODE: change to get posts of the logged-in user and their friends.
 		List<Post> allPosts = new ArrayList<>();
 		for (Post post : socialNetwork.getProfiles().get(loggedInName).getPosts()){
 			allPosts.add(post);
 		}
-
-		for (String friend : ((UserProfile)(socialNetwork.getProfiles().get(loggedInName))).getFriends()){
-			for (Post post : socialNetwork.getProfiles().get(friend).getPosts()){
-				allPosts.add(post);
+		if (socialNetwork.getProfiles().get(loggedInName) instanceof UserProfile){
+			for (String friend : ((UserProfile)(socialNetwork.getProfiles().get(loggedInName))).getFriends()){
+				for (Post post : socialNetwork.getProfiles().get(friend).getPosts()){
+					allPosts.add(post);
+				}
 			}
 		}
+
 		Collections.sort(allPosts, new Comparator<Post>(){
 			@Override
 			public int compare(Post o1, Post o2) {
@@ -413,5 +427,16 @@ public class MainPanel extends JPanel implements Observer {
 			newsFeedPanel.add(imageAndPostPanel);
 			panel.add(newsFeedPanel, BorderLayout.CENTER);
 		}
+	}
+
+	public JsonObject serializeSocialNet(){
+		JsonArray jsonArr = new JsonArray();
+		JsonObject result = new JsonObject();
+		for (Profile profile : socialNetwork.getProfiles().values()){
+			JsonObject obj = profile.serializeProfile();
+			jsonArr.add(obj);
+		}
+		result.add("socialNetwork", jsonArr);
+		return result;
 	}
 }
