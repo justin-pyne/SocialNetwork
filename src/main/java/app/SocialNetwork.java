@@ -1,5 +1,7 @@
 package app;
 
+import com.sun.source.tree.Tree;
+
 import java.util.*;
 
 /*
@@ -10,7 +12,7 @@ import java.util.*;
 public class SocialNetwork implements Subject{
 	// Must be the "Subject" in the Observer design pattern
 	// Will notify the observers (panels) when something changes
-	private Map<String, Profile> profiles = new LinkedHashMap<>();
+	private TreeMap<String, Profile> profiles = new TreeMap<>();
 	private List<Observer> observers = new ArrayList<>();
 
 	public SocialNetwork() {
@@ -37,8 +39,8 @@ public class SocialNetwork implements Subject{
 		return false;
 	}
 
-	public Map<String, Profile> getProfiles() {
-		return Map.copyOf(profiles);
+	public TreeMap<String, Profile> getProfiles() {
+		return profiles;
 	}
 
 	@Override

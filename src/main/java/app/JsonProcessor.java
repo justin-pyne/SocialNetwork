@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class JsonProcessor {
     public static void main(String[] args){
@@ -23,8 +24,8 @@ public class JsonProcessor {
 //        socialNetwork.auth(username, password2);
     }
 
-    public Map<String, Profile> parseProfiles(String fileName){
-        Map<String, Profile> profileMap = new HashMap();
+    public TreeMap<String, Profile> parseProfiles(String fileName){
+        TreeMap<String, Profile> profileMap = new TreeMap();
 
         try (FileReader fr = new FileReader(fileName)){
             JsonParser parser = new JsonParser();
