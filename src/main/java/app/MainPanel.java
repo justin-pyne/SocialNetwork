@@ -281,9 +281,9 @@ public class MainPanel extends JPanel implements Observer {
 		// Panel for adding a new event
 		JPanel addNewEventPanel = new JPanel();
 		addNewEventPanel.setLayout(new BoxLayout(addNewEventPanel, BoxLayout.Y_AXIS));
-		newPost = new JTextField(15);
-		newPost.setMaximumSize(new Dimension(200, 30));
-		addNewEventPanel.add(newPost);
+		newEvent = new JTextField(15);
+		newEvent.setMaximumSize(new Dimension(200, 30));
+		addNewEventPanel.add(newEvent);
 
 
 		// Panel for the post button
@@ -432,8 +432,8 @@ public class MainPanel extends JPanel implements Observer {
 	public JsonObject serializeSocialNet(){
 		JsonArray jsonArr = new JsonArray();
 		JsonObject result = new JsonObject();
-		for (Profile profile : socialNetwork.getProfiles().values()){
-			JsonObject obj = profile.serializeProfile();
+		for (String profile : socialNetwork.getProfiles().keySet()){
+			JsonObject obj = socialNetwork.getProfiles().get(profile).serializeProfile();
 			jsonArr.add(obj);
 		}
 		result.add("socialNetwork", jsonArr);

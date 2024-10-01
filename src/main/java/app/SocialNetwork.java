@@ -10,7 +10,7 @@ import java.util.*;
 public class SocialNetwork implements Subject{
 	// Must be the "Subject" in the Observer design pattern
 	// Will notify the observers (panels) when something changes
-	private Map<String, Profile> profiles = new HashMap<>();
+	private Map<String, Profile> profiles = new LinkedHashMap<>();
 	private List<Observer> observers = new ArrayList<>();
 
 	public SocialNetwork() {
