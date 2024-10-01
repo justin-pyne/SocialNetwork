@@ -10,6 +10,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /** A GUI for the project */
 public class MainPanel extends JPanel implements Observer {
@@ -368,16 +374,42 @@ public class MainPanel extends JPanel implements Observer {
 		newsFeedPanel.setBackground(Color.WHITE);
 
 		// FILL IN CODE: change to get posts of the logged in user and their friends.
-		String[] messagesFromAllFriends = {"post1 by Friend1", "post2 by Friend2", "post3 by Friend 3"};
-		for (String message : messagesFromAllFriends) {
+		List<Post> allPosts = new ArrayList<>();
+		for (Post post : socialNetwork.getProfiles().get(loggedInName).getPosts()){
+			allPosts.add(post);
+		}
+
+		for (String friend : ((UserProfile)(socialNetwork.getProfiles().get(loggedInName))).getFriends()){
+			for (Post post : socialNetwork.getProfiles().get(friend).getPosts()){
+				allPosts.add(post);
+			}
+		}
+		Collections.sort(allPosts, new Comparator<Post>(){
+			@Override
+			public int compare(Post o1, Post o2) {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				LocalDateTime time1 = LocalDateTime.parse(o1.getTimestamp(), formatter);
+				LocalDateTime time2 = LocalDateTime.parse(o2.getTimestamp(), formatter);
+				return time2.compareTo(time1);
+			}
+		});
+
+		List<Post> topPosts = new ArrayList<>();
+		if (allPosts.size() > 5){
+			topPosts = allPosts.subList(0, 5);
+		} else{
+			topPosts = allPosts;
+		}
+
+		for (Post post : topPosts) {
 			// FILL IN CODE: Find a friend's profile
 			// Create an image panel that will contain friend's image and message
 			JPanel imageAndPostPanel = new JPanel();
 			imageAndPostPanel.setLayout(new BorderLayout());
 			imageAndPostPanel.setBackground(Color.WHITE);
-			String imagefile = "no_image.png";// TODO: get the correct image of a friend
+			String imagefile = socialNetwork.getProfiles().get(post.getAuthor()).getImage();// TODO: get the correct image of a friend
 			addImage(imagefile, imageAndPostPanel);
-			addLabel(message, "Serif", 15, imageAndPostPanel);
+			addLabel(post.getMessage(), "Serif", 15, imageAndPostPanel);
 			newsFeedPanel.add(imageAndPostPanel);
 			panel.add(newsFeedPanel, BorderLayout.CENTER);
 		}
