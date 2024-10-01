@@ -54,6 +54,28 @@ public class OrganizationProfile extends Profile {
     }
 
     @Override
+    public JsonObject serializeProfile() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("type", "user");
+        obj.addProperty("name", this.getName());
+        obj.addProperty("year", this.getYear());
+        obj.addProperty("image", this.getImage());
+        obj.addProperty("phone", this.phone);
+        obj.addProperty("address", this.address);
+        obj.add("posts", serializePostList());
+        obj.add("supporters", serializeSupporters());
+        return obj;
+    }
+
+    public JsonArray serializeSupporters(){
+        JsonArray jsonArr = new JsonArray();
+        for (String supporter : supporters){
+            jsonArr.add(supporter);
+        }
+        return jsonArr;
+    }
+
+    @Override
     public String toString() {
         return "OrganizationProfile{" + super.toString() + '\'' + '\n' +
                 "supporters=" + supporters + '\n' +

@@ -44,6 +44,27 @@ public class UserProfile extends Profile{
     }
 
     @Override
+    public JsonObject serializeProfile() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("type", "user");
+        obj.addProperty("name", this.getName());
+        obj.addProperty("year", this.getYear());
+        obj.addProperty("image", this.getImage());
+        obj.add("posts", serializePostList());
+        obj.add("friends", serializeFriends());
+        return obj;
+    }
+
+
+    public JsonArray serializeFriends(){
+        JsonArray JsonArr = new JsonArray();
+        for (String friend : this.getFriends()){
+            JsonArr.add(friend);
+        }
+        return JsonArr;
+    }
+
+    @Override
     public String toString() {
         return "UserProfile{" + super.toString() +
                 '\'' + '\n' + "friends=" + friends +

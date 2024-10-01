@@ -9,6 +9,13 @@ public class Post {
         this.timestamp = timestamp;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
 
     @Override
     public String toString() {

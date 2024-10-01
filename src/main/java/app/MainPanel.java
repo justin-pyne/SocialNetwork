@@ -273,7 +273,7 @@ public class MainPanel extends JPanel implements Observer {
 		newEventButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT)); // Center the button
 		addNewEventButton = new JButton("Add Event");
 		addNewEventButton.addActionListener(new ButtonListener());
-		newEventButtonPanel.add(addNewPostButton);
+		newEventButtonPanel.add(addNewEventButton);
 		addNewEventPanel.add(newEventButtonPanel);
 
 		// Add subpanels to profilePanel
