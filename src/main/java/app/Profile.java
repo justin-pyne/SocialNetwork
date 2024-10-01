@@ -28,7 +28,7 @@ abstract public class Profile {
             JsonObject postObj = (JsonObject)ele;
             String message = postObj.get("message").getAsString();
             String timestamp = postObj.get("timestamp").getAsString();
-            Post post = new Post(message, timestamp);
+            Post post = new Post(message, timestamp, name);
             posts.add(post);
         }
         return posts;
@@ -71,7 +71,7 @@ abstract public class Profile {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String currTime = now.format(format);
-        Post post = new Post(message, currTime);
+        Post post = new Post(message, currTime, name);
         posts.add(post);
     }
 
