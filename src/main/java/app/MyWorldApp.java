@@ -22,10 +22,10 @@ public class MyWorldApp {
         frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         JPanel panel = new MainPanel(socialNetwork);
         // FILL IN CODE: a panel should register as an Observer for the social network
-        socialNetwork.registerObserver((Observer)panel);
         frame.add(panel);
         frame.pack();
         frame.setVisible(true);
+        socialNetwork.registerObserver((Observer)panel);
         return frame;
     }
 

@@ -173,6 +173,7 @@ public class MainPanel extends JPanel implements Observer {
 		} else {
 			showOrganizationProfile();
 		}
+		updateUI();
 	}
 
 	/**
@@ -189,13 +190,13 @@ public class MainPanel extends JPanel implements Observer {
 				// FILL IN CODE: Call a method on the social network to authenticate the user
 				// FILL IN CODE: should show a user or an organization profile
 				socialNetwork.auth(loggedInName, password);
-				update();
+				socialNetwork.notifyObservers();
 
 
 			} else if (b.equals(addNewPostButton)) { // user entered a new post
 				String newMessage = newPost.getText();
 				currProfile.addPost(newMessage);
-				update();
+
 				// FILL IN CODE:
 				// Create/Add a post for the user/organization who is logged in
 				// You need to call the method on the social network
@@ -205,18 +206,22 @@ public class MainPanel extends JPanel implements Observer {
 			} else if (b.equals(addNewFriendButton)) { // user added a new
 				// friend
 				String friendName = friend.getText();
-				currProfile.addConnection(friendName);
-				socialNetwork.getProfiles().get(friendName).addConnection(currProfile.getName());
-				update();
+				if (socialNetwork.getProfiles().containsKey(friendName)){
+					currProfile.addConnection(friendName);
+					socialNetwork.getProfiles().get(friendName).addConnection(currProfile.getName());
+				}
+				socialNetwork.notifyObservers();
 				// FILL IN CODE: add a new friend for the logged-in user
 				// Call the method to show an updated profile
 				// Decide if you need to invoke any other methods
 
 			} else if (b.equals(removeFriendButton)) { // user removed a friend
 				String friendName = friend.getText();
-				currProfile.removeConnection(friendName);
-				socialNetwork.getProfiles().get(friendName).removeConnection(currProfile.getName());
-				update();
+				if (socialNetwork.getProfiles().containsKey(friendName)){
+					currProfile.removeConnection(friendName);
+					socialNetwork.getProfiles().get(friendName).removeConnection(currProfile.getName());
+				}
+				socialNetwork.notifyObservers();
 				// FILL IN CODE: remove a friend of the logged-in user
 				// Call the method to show an updated profile
 				// Decide if you need to invoke any other methods
@@ -224,7 +229,7 @@ public class MainPanel extends JPanel implements Observer {
 			} else if (b.equals(addNewEventButton)) {
 				String eventText = newEvent.getText();
 				currProfile.addPost(eventText);
-				update();
+				socialNetwork.notifyObservers();
 				// FILL IN CODE:
 				// Add a new even for the logged-in organization
 				// You can assume it is the same as adding a post.
@@ -392,8 +397,10 @@ public class MainPanel extends JPanel implements Observer {
 		}
 		if (socialNetwork.getProfiles().get(loggedInName) instanceof UserProfile){
 			for (String friend : ((UserProfile)(socialNetwork.getProfiles().get(loggedInName))).getFriends()){
-				for (Post post : socialNetwork.getProfiles().get(friend).getPosts()){
-					allPosts.add(post);
+				if (socialNetwork.getProfiles().containsKey(friend)){
+					for (Post post : socialNetwork.getProfiles().get(friend).getPosts()) {
+						allPosts.add(post);
+					}
 				}
 			}
 		}
@@ -429,7 +436,12 @@ public class MainPanel extends JPanel implements Observer {
 		}
 	}
 
-	public JsonObject serializeSocialNet(){
+
+	/**
+	 * Private helper to serialize the SocialNetwork object into a JsonObject representation
+	 * @return JsonObject representation of the Social Network.
+	 */
+	private JsonObject serializeSocialNet(){
 		JsonArray jsonArr = new JsonArray();
 		JsonObject result = new JsonObject();
 		for (String profile : socialNetwork.getProfiles().keySet()){

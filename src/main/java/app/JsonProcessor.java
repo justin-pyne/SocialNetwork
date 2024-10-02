@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * This class contains methods to parse profiles from a JSON and create a TreeMap of all the Profile objects.
+ */
 public class JsonProcessor {
     public static void main(String[] args){
 //        JsonProcessor jp = new JsonProcessor();
@@ -24,6 +27,11 @@ public class JsonProcessor {
 //        socialNetwork.auth(username, password2);
     }
 
+    /**
+     * Parses a jsonfile of profiles, and puts profile objects into a treemap
+     * @param fileName Name of json file containing profiles
+     * @return profileMap TreeMap containing all the profiles parsed
+     */
     public TreeMap<String, Profile> parseProfiles(String fileName){
         TreeMap<String, Profile> profileMap = new TreeMap();
 

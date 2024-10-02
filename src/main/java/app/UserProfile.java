@@ -8,10 +8,17 @@ import com.google.gson.JsonArray;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class representing a User's profile on the Social Network.
+ */
 public class UserProfile extends Profile{
 
     private List<String> friends = new ArrayList<>();
 
+    /**
+     * Constructor to create a UserProfile
+     * @param obj JsonObject representing a User
+     */
     public UserProfile(JsonObject obj) {
         super(obj);
 
@@ -22,15 +29,27 @@ public class UserProfile extends Profile{
         }
     }
 
+    /**
+     * Getter for friends list
+     * @return A copy of the friends list represented by Strings
+     */
     public List<String> getFriends() {
         return List.copyOf(friends);
     }
 
+    /**
+     * Tells the type of profile for this object
+     * @return A string representing the type of profile
+     */
     @Override
     public String getType() {
         return "user";
     }
 
+    /**
+     * Adds a friend to the user's friends list.
+     * @param name Name of the connection to add
+     */
     @Override
     public void addConnection(String name) {
         if (!friends.contains(name)){
@@ -38,11 +57,19 @@ public class UserProfile extends Profile{
         }
     }
 
+    /**
+     * Removes a friend from a user's friends list.
+     * @param name Name of the connection to remove.
+     */
     @Override
     public void removeConnection(String name) {
         friends.remove(name);
     }
 
+    /**
+     * Serializes this profile into a Json Object.
+     * @return JsonObject representing this profile.
+     */
     @Override
     public JsonObject serializeProfile() {
         JsonObject obj = new JsonObject();
@@ -56,7 +83,11 @@ public class UserProfile extends Profile{
     }
 
 
-    public JsonArray serializeFriends(){
+    /**
+     * Private helper to serialize friends list into a JsonArray.
+     * @return
+     */
+    private JsonArray serializeFriends(){
         JsonArray JsonArr = new JsonArray();
         for (String friend : this.getFriends()){
             JsonArr.add(friend);
@@ -64,6 +95,10 @@ public class UserProfile extends Profile{
         return JsonArr;
     }
 
+    /**
+     * toString method for this Object
+     * @return A string representation of this object
+     */
     @Override
     public String toString() {
         return "UserProfile{" + super.toString() +
