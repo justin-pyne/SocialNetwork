@@ -173,7 +173,6 @@ public class MainPanel extends JPanel implements Observer {
 				showUserProfile();
 
 			} else {
-
 				showOrganizationProfile();
 			}
 		}

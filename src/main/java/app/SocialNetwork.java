@@ -37,7 +37,7 @@ public class SocialNetwork implements Subject{
 	 * @return boolean - whether a user logged in.
 	 */
 	public boolean auth(String username, char[] password){
-		if (!profiles.containsKey(username) || !(profiles.get(username) instanceof UserProfile) || username.length() < 3){
+		if (!profiles.containsKey(username) || username.length() < 3){
 			return false;
 		}
 
