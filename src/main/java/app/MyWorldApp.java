@@ -7,10 +7,11 @@ public class MyWorldApp {
     private SocialNetwork socialNetwork = new SocialNetwork();
     private JFrame frame1;
     private JFrame frame2;
+    private ProfileFactoryInterface profileFactory = new ProfileFactory();
 
     // FILL IN CODE: Add a method to set up the project (load data etc).
-    private void loadData(String fileName){
-        socialNetwork.loadJson(fileName);
+    private void loadData(String fileName, ProfileFactoryInterface factory){
+        socialNetwork.loadJson(fileName, factory);
     }
 
     /**
@@ -47,7 +48,7 @@ public class MyWorldApp {
     public static void main(String[] args) {
         MyWorldApp app = new MyWorldApp();
         // FILL IN CODE:  load data
-        app.loadData("./savedProfiles.json");
+        app.loadData("./profiles.json", app.profileFactory);
         app.initializeFrames();
     }
 

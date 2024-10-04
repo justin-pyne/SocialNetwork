@@ -1,6 +1,7 @@
 package app;
 
-import com.sun.source.tree.Tree;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.*;
 
@@ -25,9 +26,12 @@ public class SocialNetwork implements Subject{
 	 * Loads and parses a Json to initialize the profiles TreeMap.
 	 * @param filePath filePath of profiles Json
 	 */
-	public void loadJson(String filePath){
+	public void loadJson(String filePath, ProfileFactoryInterface factory){
 		JsonProcessor jp = new JsonProcessor();
-		profiles = jp.parseProfiles(filePath);
+		List<Profile> profilesList = jp.parseProfiles(filePath, factory);
+		for (Profile profile : profilesList){
+			profiles.put(profile.getName(), profile);
+		}
 	}
 
 	/**
@@ -52,12 +56,66 @@ public class SocialNetwork implements Subject{
 		return false;
 	}
 
+
 	/**
-	 * Gets the Profile map
-	 * @return A TreeMap of the profiles on the SocialNetwork
+	 * Returns the requested Profile from the profiles map
+	 * @param name name of profile
+	 * @return Profile object
 	 */
-	public TreeMap<String, Profile> getProfiles() {
-		return profiles;
+	public Profile getProfile(String name){
+		return profiles.get(name);
+	}
+
+	/**
+	 * Checks if a profile is in the Social Network
+	 * @param name name of profile
+	 * @return boolean of if the profile exists
+	 */
+	public boolean containsProfile(String name){
+		return profiles.containsKey(name);
+	}
+
+	/**
+	 * Calls for a post to be added to a Profile
+	 * @param username name of the user writing
+	 * @param message message body text
+	 */
+	public void addPost(String username, String message){
+		profiles.get(username).addPost(message);
+		notifyObservers();
+	}
+
+	/**
+	 * Adds a connection to the given user, and notifies observers
+	 * @param username profile to add the connection to
+	 * @param friend user being added
+	 */
+	public void addConnection(String username, String friend){
+		profiles.get(username).addConnection(friend);
+		notifyObservers();
+	}
+
+	/**
+	 * Removes a connection to the given user, and notifies observers
+	 * @param username profile to add the connection to
+	 * @param friend friend to be added
+	 */
+	public void removeConnection(String username, String friend){
+		profiles.get(username).removeConnection(friend);
+		notifyObservers();
+	}
+
+	/**
+	 * serializes this Social Network into a JSONArray
+	 * @return JsonArray of the social network
+	 */
+	public JsonArray serializeSocialNetwork(){
+		JsonArray jsonArr = new JsonArray();
+		for (String profile : profiles.keySet()){
+			JsonObject obj = profiles.get(profile).serializeProfile();
+			jsonArr.add(obj);
+		}
+		return jsonArr;
 	}
 
 

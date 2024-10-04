@@ -1,6 +1,5 @@
 package app;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 
@@ -17,16 +16,15 @@ public class UserProfile extends Profile{
 
     /**
      * Constructor to create a UserProfile
-     * @param obj JsonObject representing a User
+     * @param name name of user
+     * @param year year of user
+     * @param image image filename
+     * @param posts list of posts by user
+     * @param friends list of friends of user
      */
-    public UserProfile(JsonObject obj) {
-        super(obj);
-
-        JsonArray friendsArray = obj.getAsJsonArray("friends");
-        for (JsonElement friendEle : friendsArray){
-            String name = friendEle.getAsString();
-            friends.add(name);
-        }
+    public UserProfile(String name, int year, String image, List<Post> posts, List<String> friends) {
+        super(name, year, image, posts);
+        this.friends = friends;
     }
 
     /**

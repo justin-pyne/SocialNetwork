@@ -2,7 +2,6 @@ package app;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -168,10 +166,9 @@ public class MainPanel extends JPanel implements Observer {
 
 	@Override
 	public void update() {
-		if (socialNetwork.getProfiles().containsKey(loggedInName)) {
-			if (socialNetwork.getProfiles().get((loggedInName)).getType().equals("user")) {
+		if (socialNetwork.containsProfile(loggedInName)) {
+			if (socialNetwork.getProfile(loggedInName).getType().equals("user")) {
 				showUserProfile();
-
 			} else {
 				showOrganizationProfile();
 			}
@@ -185,7 +182,7 @@ public class MainPanel extends JPanel implements Observer {
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JButton b = (JButton) e.getSource();
-			Profile currProfile = socialNetwork.getProfiles().get(loggedInName);
+			Profile currProfile = socialNetwork.getProfile(loggedInName);
 			if (b.equals(loginUserButton)) {
 				System.out.println("Login button pressed.");
 				loggedInName = loginUserName.getText();
@@ -193,14 +190,11 @@ public class MainPanel extends JPanel implements Observer {
 				// FILL IN CODE: Call a method on the social network to authenticate the user
 				// FILL IN CODE: should show a user or an organization profile
 				socialNetwork.auth(loggedInName, password);
-				socialNetwork.notifyObservers();
 
 
 			} else if (b.equals(addNewPostButton)) { // user entered a new post
 				String newMessage = newPost.getText();
-				currProfile.addPost(newMessage);
-				socialNetwork.notifyObservers();;
-
+				socialNetwork.addPost(currProfile.getName(), newMessage);
 				// FILL IN CODE:
 				// Create/Add a post for the user/organization who is logged in
 				// You need to call the method on the social network
@@ -210,30 +204,27 @@ public class MainPanel extends JPanel implements Observer {
 			} else if (b.equals(addNewFriendButton)) { // user added a new
 				// friend
 				String friendName = friend.getText();
-				if (socialNetwork.getProfiles().containsKey(friendName)){
-					currProfile.addConnection(friendName);
-					socialNetwork.getProfiles().get(friendName).addConnection(currProfile.getName());
+				if (socialNetwork.containsProfile(friendName)){
+					socialNetwork.addConnection(currProfile.getName(), friendName);
+					socialNetwork.addConnection(friendName, currProfile.getName());
 				}
-				socialNetwork.notifyObservers();
 				// FILL IN CODE: add a new friend for the logged-in user
 				// Call the method to show an updated profile
 				// Decide if you need to invoke any other methods
 
 			} else if (b.equals(removeFriendButton)) { // user removed a friend
 				String friendName = friend.getText();
-				if (socialNetwork.getProfiles().containsKey(friendName)){
-					currProfile.removeConnection(friendName);
-					socialNetwork.getProfiles().get(friendName).removeConnection(currProfile.getName());
+				if (socialNetwork.containsProfile(friendName)){
+					socialNetwork.removeConnection(loggedInName, friendName);
+					socialNetwork.removeConnection(friendName, currProfile.getName());
 				}
-				socialNetwork.notifyObservers();
 				// FILL IN CODE: remove a friend of the logged-in user
 				// Call the method to show an updated profile
 				// Decide if you need to invoke any other methods
 
 			} else if (b.equals(addNewEventButton)) {
 				String eventText = newEvent.getText();
-				currProfile.addPost(eventText);
-				socialNetwork.notifyObservers();
+				socialNetwork.addPost(currProfile.getName(), eventText);
 				// FILL IN CODE:
 				// Add a new even for the logged-in organization
 				// You can assume it is the same as adding a post.
@@ -266,7 +257,7 @@ public class MainPanel extends JPanel implements Observer {
 		infoPanel.removeAll();
 		JPanel profilePanel = new JPanel();
 		profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
-		OrganizationProfile currUser = (OrganizationProfile)socialNetwork.getProfiles().get(loggedInName);
+		OrganizationProfile currUser = (OrganizationProfile)socialNetwork.getProfile(loggedInName);
 
 		// Panel to display the image
 		JPanel imageNamePanel = new JPanel();
@@ -323,14 +314,14 @@ public class MainPanel extends JPanel implements Observer {
 		// Panel to display the image
 		JPanel imageNamePanel = new JPanel();
 		imageNamePanel.setPreferredSize(new Dimension(700, 70));
-		String imageFile = socialNetwork.getProfiles().get(loggedInName).getImage(); // TODO: replace with the image of the logged-in user
+		String imageFile = socialNetwork.getProfile(loggedInName).getImage(); // TODO: replace with the image of the logged-in user
 		addImage(imageFile, imageNamePanel);
 		addLabel(loggedInName, "Serif", 20, imageNamePanel);
 
 		// Panel to show friends
 		JPanel showFriendsPanel = new JPanel();
 		StringBuilder sb = new StringBuilder();
-		for(String user : ((UserProfile)(socialNetwork.getProfiles().get(loggedInName))).getFriends()){
+		for(String user : ((UserProfile)(socialNetwork.getProfile(loggedInName))).getFriends()){
 			if (sb.length() > 0){
 				sb.append(", ");
 			}
@@ -396,13 +387,13 @@ public class MainPanel extends JPanel implements Observer {
 
 		// FILL IN CODE: change to get posts of the logged-in user and their friends.
 		List<Post> allPosts = new ArrayList<>();
-		for (Post post : socialNetwork.getProfiles().get(loggedInName).getPosts()){
+		for (Post post : socialNetwork.getProfile(loggedInName).getPosts()){
 			allPosts.add(post);
 		}
-		if (socialNetwork.getProfiles().get(loggedInName) instanceof UserProfile){
-			for (String friend : ((UserProfile)(socialNetwork.getProfiles().get(loggedInName))).getFriends()){
-				if (socialNetwork.getProfiles().containsKey(friend)){
-					for (Post post : socialNetwork.getProfiles().get(friend).getPosts()) {
+		if (socialNetwork.getProfile(loggedInName) instanceof UserProfile){
+			for (String friend : ((UserProfile)(socialNetwork.getProfile(loggedInName))).getFriends()){
+				if (socialNetwork.containsProfile(friend)){
+					for (Post post : socialNetwork.getProfile(friend).getPosts()) {
 						allPosts.add(post);
 					}
 				}
@@ -432,7 +423,7 @@ public class MainPanel extends JPanel implements Observer {
 			JPanel imageAndPostPanel = new JPanel();
 			imageAndPostPanel.setLayout(new BorderLayout());
 			imageAndPostPanel.setBackground(Color.WHITE);
-			String imagefile = socialNetwork.getProfiles().get(post.getAuthor()).getImage();// TODO: get the correct image of a friend
+			String imagefile = socialNetwork.getProfile(post.getAuthor()).getImage();// TODO: get the correct image of a friend
 			addImage(imagefile, imageAndPostPanel);
 			addLabel(post.getMessage(), "Serif", 15, imageAndPostPanel);
 			newsFeedPanel.add(imageAndPostPanel);
@@ -446,12 +437,8 @@ public class MainPanel extends JPanel implements Observer {
 	 * @return JsonObject representation of the Social Network.
 	 */
 	private JsonObject serializeSocialNet(){
-		JsonArray jsonArr = new JsonArray();
+		JsonArray jsonArr = socialNetwork.serializeSocialNetwork();
 		JsonObject result = new JsonObject();
-		for (String profile : socialNetwork.getProfiles().keySet()){
-			JsonObject obj = socialNetwork.getProfiles().get(profile).serializeProfile();
-			jsonArr.add(obj);
-		}
 		result.add("socialNetwork", jsonArr);
 		return result;
 	}

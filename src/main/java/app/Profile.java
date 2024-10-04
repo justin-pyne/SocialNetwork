@@ -20,13 +20,16 @@ abstract public class Profile {
 
     /**
      * Constructor for general Profile objects
-     * @param obj A JsonObject representation of the Profile
+     * @param name name of Profile
+     * @param year year of Profile
+     * @param image image filename
+     * @param posts List of posts by profile
      */
-    public Profile(JsonObject obj) {
-        this.name = obj.get("name").getAsString();
-        this.year = obj.get("year").getAsInt();
-        this.image = obj.get("image").getAsString();
-        this.posts = parsePosts(obj);
+    public Profile(String name, int year, String image, List<Post> posts) {
+        this.name = name;
+        this.year = year;
+        this.image = image;
+        this.posts = posts;
     }
 
     /**
@@ -34,14 +37,14 @@ abstract public class Profile {
      * @param obj JsonObject holding the posts of this profile
      * @return A list of posts for this profile
      */
-    private List<Post> parsePosts(JsonObject obj){
+    public static List<Post> parsePosts(JsonObject obj, String author){
         List<Post> posts = new ArrayList<>();
         JsonArray postsArray = obj.getAsJsonArray("posts");
         for (JsonElement ele : postsArray){
             JsonObject postObj = (JsonObject)ele;
             String message = postObj.get("message").getAsString();
             String timestamp = postObj.get("timestamp").getAsString();
-            Post post = new Post(message, timestamp, name);
+            Post post = new Post(message, timestamp, author);
             posts.add(post);
         }
         return posts;
@@ -74,7 +77,7 @@ abstract public class Profile {
 
     /**
      * Getter for list of posts of this profile
-     * @return A list of the posts by this profile
+     * @return A copy of the list of the posts by this profile
      */
     public List<Post> getPosts() {
         return List.copyOf(posts);

@@ -1,7 +1,6 @@
 package app;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -17,18 +16,20 @@ public class OrganizationProfile extends Profile {
     private String address;
 
     /**
-     * Constructor for an OrganizationProfile object
-     * @param obj A JsonObject representation of the OrganizationProfile
+     * Constructor for an Organization Profile
+     * @param name name of Organization
+     * @param year year of Organization
+     * @param image image filename
+     * @param posts list of posts
+     * @param phone phone number for organization
+     * @param address address of organization
+     * @param supporters list of supporters
      */
-    public OrganizationProfile(JsonObject obj) {
-        super(obj);
-        this.phone = obj.get("phone").getAsString();
-        this.address = obj.get("address").getAsString();
-        JsonArray supporterArray = obj.getAsJsonArray("supporters");
-        for (JsonElement supporterEle : supporterArray){
-            String name = supporterEle.getAsString();
-            supporters.add(name);
-        }
+    public OrganizationProfile(String name, int year, String image, List<Post> posts, String phone, String address, List<String> supporters) {
+        super(name, year, image, posts);
+        this.phone = phone;
+        this.address = address;
+        this.supporters = supporters;
     }
 
     /**

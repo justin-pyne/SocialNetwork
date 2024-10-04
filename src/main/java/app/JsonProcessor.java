@@ -6,9 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * This class contains methods to parse profiles from a JSON and create a TreeMap of all the Profile objects.
@@ -32,28 +30,24 @@ public class JsonProcessor {
      * @param fileName Name of json file containing profiles
      * @return profileMap TreeMap containing all the profiles parsed
      */
-    public TreeMap<String, Profile> parseProfiles(String fileName){
-        TreeMap<String, Profile> profileMap = new TreeMap();
+    public List<Profile> parseProfiles(String fileName, ProfileFactoryInterface factory){
+        List<Profile> profiles = new ArrayList<>();
 
         try (FileReader fr = new FileReader(fileName)){
             JsonParser parser = new JsonParser();
             JsonObject rootObj = (JsonObject)parser.parse(fr);
             JsonArray socNet = rootObj.getAsJsonArray("socialNetwork");
-            ProfileFactory factory = new ProfileFactory();
 
             for (JsonElement ele : socNet){
                 JsonObject obj = (JsonObject)ele;
-                String type = obj.get("type").getAsString();
-                String name = obj.get("name").getAsString();
-                Profile profile = factory.createProfile(type, obj);
-                profileMap.put(name, profile);
+                Profile profile = factory.createProfile(obj.get("type").getAsString(), obj);
+                profiles.add(profile);
             }
             System.out.println("Successfully parsed profiles.");
-            return profileMap;
+            return profiles;
 
         } catch (Exception e){
             System.out.println("Failed to parse the profiles: " + e);
-            e.printStackTrace();;
         }
 
         return null;
