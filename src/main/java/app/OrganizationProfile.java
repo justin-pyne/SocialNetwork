@@ -91,7 +91,7 @@ public class OrganizationProfile extends Profile {
     @Override
     public JsonObject serializeProfile() {
         JsonObject obj = new JsonObject();
-        obj.addProperty("type", "user");
+        obj.addProperty("type", "organization");
         obj.addProperty("name", this.getName());
         obj.addProperty("year", this.getYear());
         obj.addProperty("image", this.getImage());

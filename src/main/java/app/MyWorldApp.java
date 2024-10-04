@@ -47,7 +47,7 @@ public class MyWorldApp {
     public static void main(String[] args) {
         MyWorldApp app = new MyWorldApp();
         // FILL IN CODE:  load data
-        app.loadData("./profiles.json");
+        app.loadData("./savedProfiles.json");
         app.initializeFrames();
     }
 
