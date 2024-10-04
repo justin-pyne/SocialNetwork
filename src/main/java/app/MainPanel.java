@@ -168,10 +168,14 @@ public class MainPanel extends JPanel implements Observer {
 
 	@Override
 	public void update() {
-		if (socialNetwork.getProfiles().get((loggedInName)).getType().equals("user")){
-			showUserProfile();
-		} else {
-			showOrganizationProfile();
+		if (socialNetwork.getProfiles().containsKey(loggedInName)) {
+			if (socialNetwork.getProfiles().get((loggedInName)).getType().equals("user")) {
+				showUserProfile();
+
+			} else {
+
+				showOrganizationProfile();
+			}
 		}
 		updateUI();
 	}
@@ -196,6 +200,7 @@ public class MainPanel extends JPanel implements Observer {
 			} else if (b.equals(addNewPostButton)) { // user entered a new post
 				String newMessage = newPost.getText();
 				currProfile.addPost(newMessage);
+				socialNetwork.notifyObservers();;
 
 				// FILL IN CODE:
 				// Create/Add a post for the user/organization who is logged in
