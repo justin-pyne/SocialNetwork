@@ -85,11 +85,11 @@ abstract public class Profile {
 
 
     /**
-     * Serializes a Post object into a JsonObject representation.
+     * Private helper to serialize a Post object into a JsonObject representation.
      * @param post The Post object to be processed and serialized
      * @return A JsonObject representing the post
      */
-    public JsonObject serializePost(Post post){
+    private JsonObject serializePost(Post post){
         JsonObject obj = new JsonObject();
         obj.addProperty("message", post.getMessage());
         obj.addProperty("timestamp", post.getTimestamp());
