@@ -43,6 +43,7 @@ public class JsonProcessor {
                 Profile profile = factory.createProfile(obj.get("type").getAsString(), obj);
                 profiles.add(profile);
             }
+
             System.out.println("Successfully parsed profiles.");
             return profiles;
 

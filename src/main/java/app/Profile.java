@@ -17,6 +17,7 @@ abstract public class Profile {
     private int year;
     private String image;
     private List<Post> posts;
+    private List<String> followedOrgs;
 
     /**
      * Constructor for general Profile objects

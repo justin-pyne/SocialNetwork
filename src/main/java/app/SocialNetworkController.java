@@ -53,7 +53,7 @@ public class SocialNetworkController implements Controller{
      * @param friend user being added
      */
     @Override
-    public void addConnection(String username, String friend) {
+    public void addFriend(String username, String friend) {
         model.getProfile(username).addConnection(friend);
         model.notifyObservers();
     }
@@ -64,8 +64,26 @@ public class SocialNetworkController implements Controller{
      * @param friend friend to be added
      */
     @Override
-    public void removeConnection(String username, String friend) {
+    public void removeFriend(String username, String friend) {
         model.getProfile(username).removeConnection(friend);
         model.notifyObservers();
+    }
+
+    @Override
+    public void addSupporter(String user, String org) {
+        if (model.getProfile(user) instanceof UserProfile && model.getProfile(org) instanceof OrganizationProfile) {
+            model.getProfile(org).addConnection(user);
+            ((UserProfile) (model.getProfile(user))).startFollowing(org);
+            model.notifyObservers();
+        }
+    }
+
+    @Override
+    public void removeSupporter(String user, String org) {
+        if (model.getProfile(user) instanceof UserProfile && model.getProfile(org) instanceof OrganizationProfile) {
+            model.getProfile(org).removeConnection(user);
+            ((UserProfile) (model.getProfile(user))).stopFollowing(org);
+            model.notifyObservers();
+        }
     }
 }

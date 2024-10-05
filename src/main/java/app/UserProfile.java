@@ -13,7 +13,7 @@ import java.util.List;
 public class UserProfile extends Profile{
 
     private List<String> friends = new ArrayList<>();
-
+    private List<String> followedOrgs = new ArrayList<>();
     /**
      * Constructor to create a UserProfile
      * @param name name of user
@@ -64,6 +64,16 @@ public class UserProfile extends Profile{
         friends.remove(name);
     }
 
+    public void stopFollowing(String org) {
+        followedOrgs.remove(org);
+    }
+
+    public void startFollowing(String org) {
+        if (!followedOrgs.contains(org)){
+            followedOrgs.add(org);
+        }
+    }
+
     /**
      * Serializes this profile into a Json Object.
      * @return JsonObject representing this profile.
@@ -92,6 +102,7 @@ public class UserProfile extends Profile{
         }
         return JsonArr;
     }
+
 
     /**
      * toString method for this Object

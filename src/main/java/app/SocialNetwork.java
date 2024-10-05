@@ -32,6 +32,13 @@ public class SocialNetwork implements Subject{
 		for (Profile profile : profilesList){
 			profiles.put(profile.getName(), profile);
 		}
+		for (String profile : profiles.keySet()){
+			if (profiles.get(profile) instanceof OrganizationProfile){
+				for (String supporter : ((OrganizationProfile) profiles.get(profile)).getSupporters()){
+					((UserProfile)profiles.get(supporter)).startFollowing(profile);
+				}
+			}
+		}
 	}
 
 	/**

@@ -47,17 +47,17 @@ public class SocialNetworkAndControllerTest {
     }
 
     @Test
-    public void testAddConnection(){
-        controller.addConnection("Helen", "Jenny");
+    public void testAddFriend(){
+        controller.addFriend("Helen", "Jenny");
         assertTrue(((UserProfile)(socNet.getProfile("Helen"))).getFriends().contains("Jenny"));
-        controller.removeConnection("Helen", "Jenny");
+        controller.removeFriend("Helen", "Jenny");
     }
 
     @Test
-    public void testRemoveConnection(){
-        controller.removeConnection("Helen", "Cody");
+    public void testRemoveFriend(){
+        controller.removeFriend("Helen", "Cody");
         assertFalse(((UserProfile)(socNet.getProfile("Helen"))).getFriends().contains("Cody"));
-        controller.addConnection("Helen", "Cody");
+        controller.addFriend("Helen", "Cody");
 
     }
 

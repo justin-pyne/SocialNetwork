@@ -205,8 +205,15 @@ public class MainPanel extends JPanel implements Observer {
 				// friend
 				String friendName = friend.getText();
 				if (socialNetwork.containsProfile(friendName)){
-					controller.addConnection(currProfile.getName(), friendName);
-					controller.addConnection(friendName, currProfile.getName());
+					Profile profile = socialNetwork.getProfile(friendName);
+
+					if (profile instanceof UserProfile){
+						controller.addFriend(currProfile.getName(), friendName);
+						controller.addFriend(friendName, currProfile.getName());
+					} else if (profile instanceof OrganizationProfile){
+						controller.addSupporter(currProfile.getName(), friendName);
+					}
+
 				}
 				// FILL IN CODE: add a new friend for the logged-in user
 				// Call the method to show an updated profile
@@ -215,8 +222,14 @@ public class MainPanel extends JPanel implements Observer {
 			} else if (b.equals(removeFriendButton)) { // user removed a friend
 				String friendName = friend.getText();
 				if (socialNetwork.containsProfile(friendName)){
-					controller.removeConnection(loggedInName, friendName);
-					controller.removeConnection(friendName, currProfile.getName());
+					Profile profile = socialNetwork.getProfile(friendName);
+
+					if (profile instanceof UserProfile){
+						controller.removeFriend(loggedInName, friendName);
+						controller.removeFriend(friendName, currProfile.getName());
+					} else if (profile instanceof OrganizationProfile){
+						controller.removeSupporter(currProfile.getName(), friendName);
+					}
 				}
 				// FILL IN CODE: remove a friend of the logged-in user
 				// Call the method to show an updated profile
