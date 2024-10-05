@@ -74,6 +74,10 @@ public class UserProfile extends Profile{
         }
     }
 
+    public List<String> getFollowedOrgs(){
+        return List.copyOf(followedOrgs);
+    }
+
     /**
      * Serializes this profile into a Json Object.
      * @return JsonObject representing this profile.

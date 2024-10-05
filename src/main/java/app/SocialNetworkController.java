@@ -28,11 +28,9 @@ public class SocialNetworkController implements Controller{
         String expectedPassword = username.substring(0, 3).toLowerCase() + model.getProfile(username).getYear();
         char[] expectedChars = expectedPassword.toCharArray();
         if (Arrays.equals(password, expectedChars)){
-            System.out.println("Logged in.");
             model.notifyObservers();
             return true;
         }
-        System.out.println("Login failed.");
         return false;
     }
 

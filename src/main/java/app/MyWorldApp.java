@@ -8,6 +8,7 @@ public class MyWorldApp {
     private JFrame frame1;
     private JFrame frame2;
     private ProfileFactoryInterface profileFactory = new ProfileFactory();
+    private SocialNetworkController controller = new SocialNetworkController(socialNetwork);
 
     // FILL IN CODE: Add a method to set up the project (load data etc).
     private void loadData(String fileName, ProfileFactoryInterface factory){
@@ -21,7 +22,7 @@ public class MyWorldApp {
     public JFrame createFrame() {
         JFrame frame = new JFrame ("MyWorld");
         frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        JPanel panel = new MainPanel(socialNetwork);
+        JPanel panel = new MainPanel(socialNetwork, controller);
         // FILL IN CODE: a panel should register as an Observer for the social network
         frame.add(panel);
         frame.pack();

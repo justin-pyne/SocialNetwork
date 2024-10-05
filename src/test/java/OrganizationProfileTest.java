@@ -118,8 +118,8 @@ public class OrganizationProfileTest {
         posts.add(new Post("Post2", "2024-10-04 13:00:00", "testOrg"));
 
         List<String> supporters = new ArrayList<>();
-        supporters.add("friend1");
-        supporters.add("friend2");
+        supporters.add("supporter1");
+        supporters.add("supporter2");
 
         OrganizationProfile testProfile = new OrganizationProfile("testOrg", 2000, "testOrg.png", posts, "123-123-1234", "30 Test Street", supporters);
 

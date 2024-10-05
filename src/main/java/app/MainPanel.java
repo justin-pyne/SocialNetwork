@@ -57,8 +57,9 @@ public class MainPanel extends JPanel implements Observer {
 	 * Constructor
 	 * @param socialNetwork reference to SocialNetwork
 	 */
-	public MainPanel(SocialNetwork socialNetwork) {
+	public MainPanel(SocialNetwork socialNetwork, SocialNetworkController controller) {
 		this.socialNetwork = socialNetwork;
+		this.controller = controller;
 		setPreferredSize(new Dimension(500, 500));
 		setBackground(Color.lightGray);
 		setLayout(new BorderLayout());
@@ -184,7 +185,6 @@ public class MainPanel extends JPanel implements Observer {
 			JButton b = (JButton) e.getSource();
 			Profile currProfile = socialNetwork.getProfile(loggedInName);
 			if (b.equals(loginUserButton)) {
-				System.out.println("Login button pressed.");
 				loggedInName = loginUserName.getText();
 				char[] password = loginUserPassword.getPassword();
 				// FILL IN CODE: Call a method on the social network to authenticate the user
@@ -343,6 +343,17 @@ public class MainPanel extends JPanel implements Observer {
 		String friendsString = sb.toString(); // TODO: change to friends of the logged-in user
 		addLabel("Friends: " + friendsString, "Serif", 15, showFriendsPanel);
 
+		JPanel showFollowedOrgPanel = new JPanel();
+		StringBuilder sb2 = new StringBuilder();
+		for(String org : ((UserProfile)(socialNetwork.getProfile(loggedInName))).getFollowedOrgs()){
+			if (sb2.length() > 0){
+				sb2.append(", ");
+			}
+			sb2.append(org);
+		}
+		String orgString = sb2.toString(); // TODO: change to friends of the logged-in user
+		addLabel("Followed Organizations: " + orgString, "Serif", 15, showFollowedOrgPanel);
+
 		// Panel to add a new friend
 		JPanel addNewFriendPanel = new JPanel();
 		addNewFriendPanel.setLayout(new BoxLayout(addNewFriendPanel, BoxLayout.Y_AXIS));
@@ -378,6 +389,7 @@ public class MainPanel extends JPanel implements Observer {
 		// Add subpanels to profilePanel
 		profilePanel.add(imageNamePanel);
 		profilePanel.add(showFriendsPanel);
+		profilePanel.add(showFollowedOrgPanel);
 		profilePanel.add(addNewFriendPanel);
 		profilePanel.add(addNewPostPanel);
 
@@ -400,12 +412,12 @@ public class MainPanel extends JPanel implements Observer {
 
 		// FILL IN CODE: change to get posts of the logged-in user and their friends.
 		List<Post> allPosts = new ArrayList<>();
-		for (Post post : socialNetwork.getProfile(loggedInName).getPosts()){
+		for (Post post : socialNetwork.getProfile(loggedInName).getPosts()) {
 			allPosts.add(post);
 		}
-		if (socialNetwork.getProfile(loggedInName) instanceof UserProfile){
-			for (String friend : ((UserProfile)(socialNetwork.getProfile(loggedInName))).getFriends()){
-				if (socialNetwork.containsProfile(friend)){
+		if (socialNetwork.getProfile(loggedInName) instanceof UserProfile) {
+			for (String friend : ((UserProfile) (socialNetwork.getProfile(loggedInName))).getFriends()) {
+				if (socialNetwork.containsProfile(friend)) {
 					for (Post post : socialNetwork.getProfile(friend).getPosts()) {
 						allPosts.add(post);
 					}
@@ -413,7 +425,7 @@ public class MainPanel extends JPanel implements Observer {
 			}
 		}
 
-		Collections.sort(allPosts, new Comparator<Post>(){
+		Collections.sort(allPosts, new Comparator<Post>() {
 			@Override
 			public int compare(Post o1, Post o2) {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -424,9 +436,9 @@ public class MainPanel extends JPanel implements Observer {
 		});
 
 		List<Post> topPosts = new ArrayList<>();
-		if (allPosts.size() > 5){
+		if (allPosts.size() > 5) {
 			topPosts = allPosts.subList(0, 5);
-		} else{
+		} else {
 			topPosts = allPosts;
 		}
 
@@ -441,6 +453,49 @@ public class MainPanel extends JPanel implements Observer {
 			addLabel(post.getMessage(), "Serif", 15, imageAndPostPanel);
 			newsFeedPanel.add(imageAndPostPanel);
 			panel.add(newsFeedPanel, BorderLayout.CENTER);
+		}
+
+		if (socialNetwork.getProfile(loggedInName) instanceof UserProfile) {
+			UserProfile currUser = (UserProfile) socialNetwork.getProfile(loggedInName);
+			JPanel eventNewsFeedPanel = new JPanel();
+			eventNewsFeedPanel.setLayout(new BoxLayout(eventNewsFeedPanel, BoxLayout.Y_AXIS));
+			eventNewsFeedPanel.setBackground(Color.LIGHT_GRAY);
+
+			List<Post> allEventPosts = new ArrayList<>();
+
+			for (String org : currUser.getFollowedOrgs()) {
+				if (socialNetwork.containsProfile(org)) {
+					for (Post post : socialNetwork.getProfile(org).getPosts()) {
+						allEventPosts.add(post);
+					}
+				}
+			}
+			Collections.sort(allEventPosts, new Comparator<Post>() {
+				@Override
+				public int compare(Post o1, Post o2) {
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+					LocalDateTime time1 = LocalDateTime.parse(o1.getTimestamp(), formatter);
+					LocalDateTime time2 = LocalDateTime.parse(o2.getTimestamp(), formatter);
+					return time2.compareTo(time1);
+				}
+			});
+			List<Post> topEvents = new ArrayList<>();
+			if (allEventPosts.size() > 5) {
+				topEvents = allEventPosts.subList(0, 5);
+			} else {
+				topEvents = allEventPosts;
+			}
+
+			for (Post post : topEvents){
+				JPanel eventPanel = new JPanel();
+				eventPanel.setLayout(new BorderLayout());
+				eventPanel.setBackground(Color.LIGHT_GRAY);
+				String eventImage = socialNetwork.getProfile(post.getAuthor()).getImage();// TODO: get the correct image of a friend
+				addImage(eventImage, eventPanel);
+				addLabel(post.getMessage(), "Serif", 15, eventPanel);
+				eventNewsFeedPanel.add(eventPanel);
+				panel.add(eventNewsFeedPanel, BorderLayout.SOUTH);
+			}
 		}
 	}
 
