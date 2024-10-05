@@ -13,7 +13,7 @@ public class SocialNetworkAndControllerTest {
 
     @BeforeEach
     public void setUp(){
-        socNet.loadJson("testProfile.json", factory);
+        socNet.loadJson("./testProfile.json", factory);
     }
 
 
@@ -38,7 +38,7 @@ public class SocialNetworkAndControllerTest {
     @Test
     public void testAddPost(){
         SocialNetwork socNet2 = new SocialNetwork();
-        socNet2.loadJson("testProfile.json", factory);
+        socNet2.loadJson("./testProfile.json", factory);
         SocialNetworkController controller2 = new SocialNetworkController(socNet2);
         controller2.addPost("Helen", "Test post.");
         assertEquals(3, socNet2.getProfile("Helen").getPosts().size());
