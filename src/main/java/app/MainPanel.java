@@ -26,7 +26,7 @@ public class MainPanel extends JPanel implements Observer {
 	// and gets notified when something changes in the social network
 	private SocialNetwork socialNetwork;
 	private String loggedInName = " "; // the user or organization who is currently logged in
-
+	private SocialNetworkController controller;
 	private static String defaultPathToSaveSocialNetwork = "savedProfiles.json";
 	// the text field and the button used to log in
 	private JTextField loginUserName;
@@ -189,12 +189,12 @@ public class MainPanel extends JPanel implements Observer {
 				char[] password = loginUserPassword.getPassword();
 				// FILL IN CODE: Call a method on the social network to authenticate the user
 				// FILL IN CODE: should show a user or an organization profile
-				socialNetwork.auth(loggedInName, password);
+				controller.auth(loggedInName, password);
 
 
 			} else if (b.equals(addNewPostButton)) { // user entered a new post
 				String newMessage = newPost.getText();
-				socialNetwork.addPost(currProfile.getName(), newMessage);
+				controller.addPost(currProfile.getName(), newMessage);
 				// FILL IN CODE:
 				// Create/Add a post for the user/organization who is logged in
 				// You need to call the method on the social network
@@ -205,8 +205,8 @@ public class MainPanel extends JPanel implements Observer {
 				// friend
 				String friendName = friend.getText();
 				if (socialNetwork.containsProfile(friendName)){
-					socialNetwork.addConnection(currProfile.getName(), friendName);
-					socialNetwork.addConnection(friendName, currProfile.getName());
+					controller.addConnection(currProfile.getName(), friendName);
+					controller.addConnection(friendName, currProfile.getName());
 				}
 				// FILL IN CODE: add a new friend for the logged-in user
 				// Call the method to show an updated profile
@@ -215,8 +215,8 @@ public class MainPanel extends JPanel implements Observer {
 			} else if (b.equals(removeFriendButton)) { // user removed a friend
 				String friendName = friend.getText();
 				if (socialNetwork.containsProfile(friendName)){
-					socialNetwork.removeConnection(loggedInName, friendName);
-					socialNetwork.removeConnection(friendName, currProfile.getName());
+					controller.removeConnection(loggedInName, friendName);
+					controller.removeConnection(friendName, currProfile.getName());
 				}
 				// FILL IN CODE: remove a friend of the logged-in user
 				// Call the method to show an updated profile
@@ -224,7 +224,7 @@ public class MainPanel extends JPanel implements Observer {
 
 			} else if (b.equals(addNewEventButton)) {
 				String eventText = newEvent.getText();
-				socialNetwork.addPost(currProfile.getName(), eventText);
+				controller.addPost(currProfile.getName(), eventText);
 				// FILL IN CODE:
 				// Add a new even for the logged-in organization
 				// You can assume it is the same as adding a post.

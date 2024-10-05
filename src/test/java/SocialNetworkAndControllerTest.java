@@ -1,16 +1,14 @@
-import app.ProfileFactory;
-import app.ProfileFactoryInterface;
-import app.SocialNetwork;
-import app.UserProfile;
+import app.*;
 import com.google.gson.JsonArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SocialNetworkTest {
+public class SocialNetworkAndControllerTest {
     private SocialNetwork socNet = new SocialNetwork();
     private ProfileFactoryInterface factory = new ProfileFactory();
+    private SocialNetworkController controller = new SocialNetworkController(socNet);
 
 
     @BeforeEach
@@ -21,13 +19,13 @@ public class SocialNetworkTest {
 
     @Test
     public void testTrueAuth(){
-        boolean authResult = socNet.auth("Helen", "hel1990".toCharArray());
+        boolean authResult = controller.auth("Helen", "hel1990".toCharArray());
         assertTrue(authResult);
     }
 
     @Test
     public void testFalseAuth(){
-        boolean authResult = socNet.auth("FalseUser", "falsepass".toCharArray());
+        boolean authResult = controller.auth("FalseUser", "falsepass".toCharArray());
         assertFalse(authResult);
     }
 
@@ -41,7 +39,8 @@ public class SocialNetworkTest {
     public void testAddPost(){
         SocialNetwork socNet2 = new SocialNetwork();
         socNet2.loadJson("testProfile.json", factory);
-        socNet2.addPost("Helen", "Test post.");
+        SocialNetworkController controller2 = new SocialNetworkController(socNet2);
+        controller2.addPost("Helen", "Test post.");
         assertEquals(3, socNet2.getProfile("Helen").getPosts().size());
         assertEquals("Test post.", socNet2.getProfile("Helen").getPosts().get(2).getMessage());
         assertEquals("Helen", socNet2.getProfile("Helen").getPosts().get(2).getAuthor());
@@ -49,16 +48,16 @@ public class SocialNetworkTest {
 
     @Test
     public void testAddConnection(){
-        socNet.addConnection("Helen", "Jenny");
+        controller.addConnection("Helen", "Jenny");
         assertTrue(((UserProfile)(socNet.getProfile("Helen"))).getFriends().contains("Jenny"));
-        socNet.removeConnection("Helen", "Jenny");
+        controller.removeConnection("Helen", "Jenny");
     }
 
     @Test
     public void testRemoveConnection(){
-        socNet.removeConnection("Helen", "Cody");
+        controller.removeConnection("Helen", "Cody");
         assertFalse(((UserProfile)(socNet.getProfile("Helen"))).getFriends().contains("Cody"));
-        socNet.addConnection("Helen", "Cody");
+        controller.addConnection("Helen", "Cody");
 
     }
 

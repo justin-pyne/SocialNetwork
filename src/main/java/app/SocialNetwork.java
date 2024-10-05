@@ -35,29 +35,6 @@ public class SocialNetwork implements Subject{
 	}
 
 	/**
-	 * Authenticates a username and password and logs a user in.
-	 * @param username Entered username
-	 * @param password Entered password
-	 * @return boolean - whether a user logged in.
-	 */
-	public boolean auth(String username, char[] password){
-		if (!profiles.containsKey(username) || username.length() < 3){
-			return false;
-		}
-
-		String expectedPassword = username.substring(0, 3).toLowerCase() + profiles.get(username).getYear();
-		char[] expectedChars = expectedPassword.toCharArray();
-		if (Arrays.equals(password, expectedChars)){
-			System.out.println("Logged in.");
-			notifyObservers();
-			return true;
-		}
-		System.out.println("Login failed.");
-		return false;
-	}
-
-
-	/**
 	 * Returns the requested Profile from the profiles map
 	 * @param name name of profile
 	 * @return Profile object
@@ -73,36 +50,6 @@ public class SocialNetwork implements Subject{
 	 */
 	public boolean containsProfile(String name){
 		return profiles.containsKey(name);
-	}
-
-	/**
-	 * Calls for a post to be added to a Profile
-	 * @param username name of the user writing
-	 * @param message message body text
-	 */
-	public void addPost(String username, String message){
-		profiles.get(username).addPost(message);
-		notifyObservers();
-	}
-
-	/**
-	 * Adds a connection to the given user, and notifies observers
-	 * @param username profile to add the connection to
-	 * @param friend user being added
-	 */
-	public void addConnection(String username, String friend){
-		profiles.get(username).addConnection(friend);
-		notifyObservers();
-	}
-
-	/**
-	 * Removes a connection to the given user, and notifies observers
-	 * @param username profile to add the connection to
-	 * @param friend friend to be added
-	 */
-	public void removeConnection(String username, String friend){
-		profiles.get(username).removeConnection(friend);
-		notifyObservers();
 	}
 
 	/**
