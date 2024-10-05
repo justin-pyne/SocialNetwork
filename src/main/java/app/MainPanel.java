@@ -261,10 +261,9 @@ public class MainPanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * Shows a user profile with some hardcoded values.
+	 * Shows an Organization profile with some hardcoded values.
 	 * You need modify this method to display the user profile with name = loggedInName.
 	 * Removes everything from infoPanel and then rebuilds it again.
-	 * Think of how you can write a similar method to display an organization profile.
 	 */
 	public void showOrganizationProfile() {
 		infoPanel.removeAll();
@@ -318,7 +317,12 @@ public class MainPanel extends JPanel implements Observer {
 		addNewsfeedPanel(infoPanel); // TODO: modify this method as needed
 	}
 
-
+	/**
+	 * Shows a User profile with some hardcoded values.
+	 * You need modify this method to display the user profile with name = loggedInName.
+	 * Removes everything from infoPanel and then rebuilds it again.
+	 * Think of how you can write a similar method to display an organization profile.
+	 */
 	public void showUserProfile() {
 		infoPanel.removeAll();
 		JPanel profilePanel = new JPanel();

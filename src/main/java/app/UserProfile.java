@@ -64,16 +64,28 @@ public class UserProfile extends Profile{
         friends.remove(name);
     }
 
+    /**
+     * Stops following the given organization
+     * @param org Organization to unfollow
+     */
     public void stopFollowing(String org) {
         followedOrgs.remove(org);
     }
 
+    /**
+     * Starts following the given organization
+     * @param org Organization to follow
+     */
     public void startFollowing(String org) {
         if (!followedOrgs.contains(org)){
             followedOrgs.add(org);
         }
     }
 
+    /**
+     * Getter for list of followed organizations
+     * @return A copy of the followed organization list
+     */
     public List<String> getFollowedOrgs(){
         return List.copyOf(followedOrgs);
     }

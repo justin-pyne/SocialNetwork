@@ -1,5 +1,8 @@
 package app;
 
+/**
+ * Interface for the controller in the MVC design pattern
+ */
 public interface Controller {
     boolean auth(String username, char[] password);
     void addPost(String username, String message);

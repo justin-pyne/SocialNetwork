@@ -67,6 +67,11 @@ public class SocialNetworkController implements Controller{
         model.notifyObservers();
     }
 
+    /**
+     * Starts following an organization for the given user
+     * @param user User who is following
+     * @param org Organization to follow
+     */
     @Override
     public void addSupporter(String user, String org) {
         if (model.getProfile(user) instanceof UserProfile && model.getProfile(org) instanceof OrganizationProfile) {
@@ -76,6 +81,11 @@ public class SocialNetworkController implements Controller{
         }
     }
 
+    /**
+     * Stops following an organization for the given user
+     * @param user User who is unfollowing
+     * @param org Organization getting unfollowed
+     */
     @Override
     public void removeSupporter(String user, String org) {
         if (model.getProfile(user) instanceof UserProfile && model.getProfile(org) instanceof OrganizationProfile) {
