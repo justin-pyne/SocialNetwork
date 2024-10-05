@@ -10,7 +10,11 @@ public class MyWorldApp {
     private ProfileFactoryInterface profileFactory = new ProfileFactory();
     private SocialNetworkController controller = new SocialNetworkController(socialNetwork);
 
-    // FILL IN CODE: Add a method to set up the project (load data etc).
+    /**
+     * Loads data into the Social Network
+     * @param fileName
+     * @param factory
+     */
     private void loadData(String fileName, ProfileFactoryInterface factory){
         socialNetwork.loadJson(fileName, factory);
     }

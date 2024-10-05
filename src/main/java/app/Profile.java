@@ -128,6 +128,10 @@ abstract public class Profile {
     public abstract void removeConnection(String name);
     public abstract JsonObject serializeProfile();
 
+    /**
+     * toString method override
+     * @return String representation of a Profile
+     */
     @Override
     public String toString() {
         return "Profile{" +

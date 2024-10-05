@@ -22,8 +22,6 @@ import java.util.List;
 
 /** A GUI for the project */
 public class MainPanel extends JPanel implements Observer {
-	// FILL IN CODE: A panel must implement Observer interface, so that it is an observer for the SocialNetwork,
-	// and gets notified when something changes in the social network
 	private SocialNetwork socialNetwork;
 	private String loggedInName = " "; // the user or organization who is currently logged in
 	private SocialNetworkController controller;
@@ -72,11 +70,7 @@ public class MainPanel extends JPanel implements Observer {
 	public void createPanels() {
 		createTopPanel();
 		createInfoPanel();
-		loggedInName = "Helen";
-		// FILL IN CODE:
-
-		// Set the loggedInName to some "default" user (first user in your social network?)
-		// Call a method to show the profile
+		loggedInName = socialNetwork.getDefaultProfile();
 		update();
 		add(topPanel, BorderLayout.NORTH);
 		add(infoPanel, BorderLayout.CENTER);
@@ -187,37 +181,24 @@ public class MainPanel extends JPanel implements Observer {
 			if (b.equals(loginUserButton)) {
 				loggedInName = loginUserName.getText();
 				char[] password = loginUserPassword.getPassword();
-				// FILL IN CODE: Call a method on the social network to authenticate the user
-				// FILL IN CODE: should show a user or an organization profile
 				controller.auth(loggedInName, password);
-
 
 			} else if (b.equals(addNewPostButton)) { // user entered a new post
 				String newMessage = newPost.getText();
 				controller.addPost(currProfile.getName(), newMessage);
-				// FILL IN CODE:
-				// Create/Add a post for the user/organization who is logged in
-				// You need to call the method on the social network
-				// Call the method to show an updated profile
-				// Decide if you need to invoke any other methods
 
 			} else if (b.equals(addNewFriendButton)) { // user added a new
 				// friend
 				String friendName = friend.getText();
 				if (socialNetwork.containsProfile(friendName)){
 					Profile profile = socialNetwork.getProfile(friendName);
-
 					if (profile instanceof UserProfile){
 						controller.addFriend(currProfile.getName(), friendName);
 						controller.addFriend(friendName, currProfile.getName());
 					} else if (profile instanceof OrganizationProfile){
 						controller.addSupporter(currProfile.getName(), friendName);
 					}
-
 				}
-				// FILL IN CODE: add a new friend for the logged-in user
-				// Call the method to show an updated profile
-				// Decide if you need to invoke any other methods
 
 			} else if (b.equals(removeFriendButton)) { // user removed a friend
 				String friendName = friend.getText();
@@ -231,18 +212,10 @@ public class MainPanel extends JPanel implements Observer {
 						controller.removeSupporter(currProfile.getName(), friendName);
 					}
 				}
-				// FILL IN CODE: remove a friend of the logged-in user
-				// Call the method to show an updated profile
-				// Decide if you need to invoke any other methods
 
 			} else if (b.equals(addNewEventButton)) {
 				String eventText = newEvent.getText();
 				controller.addPost(currProfile.getName(), eventText);
-				// FILL IN CODE:
-				// Add a new even for the logged-in organization
-				// You can assume it is the same as adding a post.
-				// Call the method to show an updated profile
-				// Decide if you need to invoke any other methods
 
 			} else if (b.equals(saveButton)) {
 				try (PrintWriter pw = new PrintWriter("savedProfiles.json")){
@@ -251,10 +224,6 @@ public class MainPanel extends JPanel implements Observer {
 				} catch (IOException k){
 					System.out.println(k);
 				}
-
-				// FILL IN CODE:
-				// Save social network in the file with the name
-				// stored in defaultPathToSaveSocialNetwork
 			}
 			updateUI();
 		}
@@ -274,7 +243,7 @@ public class MainPanel extends JPanel implements Observer {
 		// Panel to display the image
 		JPanel imageNamePanel = new JPanel();
 		imageNamePanel.setPreferredSize(new Dimension(700, 70));
-		String imageFile = currUser.getImage(); // TODO: replace with the image of the logged-in user
+		String imageFile = currUser.getImage();
 		addImage(imageFile, imageNamePanel);
 		addLabel(loggedInName, "Serif", 20, imageNamePanel);
 
@@ -314,7 +283,7 @@ public class MainPanel extends JPanel implements Observer {
 		profilePanel.add(addNewEventPanel);
 
 		infoPanel.add(profilePanel, BorderLayout.NORTH);
-		addNewsfeedPanel(infoPanel); // TODO: modify this method as needed
+		addNewsfeedPanel(infoPanel);
 	}
 
 	/**
@@ -331,7 +300,7 @@ public class MainPanel extends JPanel implements Observer {
 		// Panel to display the image
 		JPanel imageNamePanel = new JPanel();
 		imageNamePanel.setPreferredSize(new Dimension(700, 70));
-		String imageFile = socialNetwork.getProfile(loggedInName).getImage(); // TODO: replace with the image of the logged-in user
+		String imageFile = socialNetwork.getProfile(loggedInName).getImage();
 		addImage(imageFile, imageNamePanel);
 		addLabel(loggedInName, "Serif", 20, imageNamePanel);
 
@@ -344,7 +313,7 @@ public class MainPanel extends JPanel implements Observer {
 			}
 			sb.append(user);
 		}
-		String friendsString = sb.toString(); // TODO: change to friends of the logged-in user
+		String friendsString = sb.toString();
 		addLabel("Friends: " + friendsString, "Serif", 15, showFriendsPanel);
 
 		JPanel showFollowedOrgPanel = new JPanel();
@@ -355,7 +324,7 @@ public class MainPanel extends JPanel implements Observer {
 			}
 			sb2.append(org);
 		}
-		String orgString = sb2.toString(); // TODO: change to friends of the logged-in user
+		String orgString = sb2.toString();
 		addLabel("Followed Organizations: " + orgString, "Serif", 15, showFollowedOrgPanel);
 
 		// Panel to add a new friend
@@ -398,7 +367,7 @@ public class MainPanel extends JPanel implements Observer {
 		profilePanel.add(addNewPostPanel);
 
 		infoPanel.add(profilePanel, BorderLayout.NORTH);
-		addNewsfeedPanel(infoPanel); // TODO: modify this method as needed
+		addNewsfeedPanel(infoPanel); //
 	}
 	/**
 	 * Add a newsfeed panel for the user that is logged in. The newsfeed
@@ -409,12 +378,10 @@ public class MainPanel extends JPanel implements Observer {
 	 * @param panel
 	 */
 	public void addNewsfeedPanel(JPanel panel) {
-		// You may add additional parameter(s) if needed
 		JPanel newsFeedPanel = new JPanel();
 		newsFeedPanel.setLayout(new BoxLayout(newsFeedPanel, BoxLayout.Y_AXIS));
 		newsFeedPanel.setBackground(Color.WHITE);
 
-		// FILL IN CODE: change to get posts of the logged-in user and their friends.
 		List<Post> allPosts = new ArrayList<>();
 		for (Post post : socialNetwork.getProfile(loggedInName).getPosts()) {
 			allPosts.add(post);
@@ -447,12 +414,10 @@ public class MainPanel extends JPanel implements Observer {
 		}
 
 		for (Post post : topPosts) {
-			// FILL IN CODE: Find a friend's profile
-			// Create an image panel that will contain friend's image and message
 			JPanel imageAndPostPanel = new JPanel();
 			imageAndPostPanel.setLayout(new BorderLayout());
 			imageAndPostPanel.setBackground(Color.WHITE);
-			String imagefile = socialNetwork.getProfile(post.getAuthor()).getImage();// TODO: get the correct image of a friend
+			String imagefile = socialNetwork.getProfile(post.getAuthor()).getImage();
 			addImage(imagefile, imageAndPostPanel);
 			addLabel(post.getMessage(), "Serif", 15, imageAndPostPanel);
 			newsFeedPanel.add(imageAndPostPanel);
@@ -494,7 +459,7 @@ public class MainPanel extends JPanel implements Observer {
 				JPanel eventPanel = new JPanel();
 				eventPanel.setLayout(new BorderLayout());
 				eventPanel.setBackground(Color.LIGHT_GRAY);
-				String eventImage = socialNetwork.getProfile(post.getAuthor()).getImage();// TODO: get the correct image of a friend
+				String eventImage = socialNetwork.getProfile(post.getAuthor()).getImage();
 				addImage(eventImage, eventPanel);
 				addLabel(post.getMessage(), "Serif", 15, eventPanel);
 				eventNewsFeedPanel.add(eventPanel);

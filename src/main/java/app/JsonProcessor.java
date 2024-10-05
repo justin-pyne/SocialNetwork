@@ -12,6 +12,10 @@ import java.util.*;
  * This class contains methods to parse profiles from a JSON and create a TreeMap of all the Profile objects.
  */
 public class JsonProcessor {
+    /**
+     * Main method for testing
+     * @param args
+     */
     public static void main(String[] args){
 //        JsonProcessor jp = new JsonProcessor();
 //        Map<String, Profile> testMap = jp.parseProfiles("./profiles.json");
@@ -48,7 +52,6 @@ public class JsonProcessor {
         } catch (Exception e){
             System.out.println("Failed to parse the profiles: " + e);
         }
-
         return null;
     }
 }

@@ -11,8 +11,6 @@ import java.util.*;
  * This class keeps track of the profiles.
  */
 public class SocialNetwork implements Subject{
-	// Must be the "Subject" in the Observer design pattern
-	// Will notify the observers (panels) when something changes
 	private TreeMap<String, Profile> profiles = new TreeMap<>();
 	private List<Observer> observers = new ArrayList<>();
 
@@ -102,8 +100,16 @@ public class SocialNetwork implements Subject{
 
 	}
 
-	// FILL IN CODE: add variables, methods, and other classes
-
-	// Also add JUnit tests for the project  - please see the pdf for details
-
+	/**
+	 * Returns the first user in the profiles map
+	 * @return Name of first profile
+	 */
+	public String getDefaultProfile() {
+		for (String user : profiles.keySet()){
+			if (getProfile(user).getType().equals("user")){
+				return user;
+			}
+		}
+		return null;
+	}
 }
