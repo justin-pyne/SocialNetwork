@@ -26,9 +26,9 @@ public class JsonProcessor {
     }
 
     /**
-     * Parses a jsonfile of profiles, and puts profile objects into a treemap
+     * Parses a jsonfile of profiles, and puts profile objects into a list
      * @param fileName Name of json file containing profiles
-     * @return profileMap TreeMap containing all the profiles parsed
+     * @return profiles list containing all the profiles parsed
      */
     public List<Profile> parseProfiles(String fileName, ProfileFactoryInterface factory){
         List<Profile> profiles = new ArrayList<>();
